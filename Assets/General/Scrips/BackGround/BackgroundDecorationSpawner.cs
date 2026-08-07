@@ -2,14 +2,11 @@ using UnityEngine;
 
 public class BackgroundDecorationSpawner : MonoBehaviour
 {
-    [Header("Lista de Prefabs Decorativos")]
     public GameObject[] decorationPrefabs;
 
-    [Header("Tiempos de Spawn")]
     public float minSpawnTime = 2f;
     public float maxSpawnTime = 6f;
 
-    [Header("Posición de Aparición")]
     public float spawnX = 12f;
     public float spawnY = -1.5f;
 

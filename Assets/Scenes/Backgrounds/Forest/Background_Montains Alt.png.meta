@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: e6d7aba2be83d734cbef31abbe5a0032
+guid: 87bb6ca7b47c49648bb0057a211d27df
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5817113628484480594
-    second: Background_Rock2_0
+      213: 5559990497886847792
+    second: Background_Montains Alt_0
+  - first:
+      213: 1974186718104965354
+    second: Background_Montains Alt_1
+  - first:
+      213: 1977245580991035735
+    second: Background_Montains Alt_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +57,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 200
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,23 +106,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Background_Rock2_0
+      name: Background_Montains Alt_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 666
-        height: 483
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        width: 3388
+        height: 1434
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 25ea6e3560a8ab050800000000000000
-      internalID: 5817113628484480594
+      spriteID: 033c71556ed092d40800000000000000
+      internalID: 5559990497886847792
       vertices: []
       indices: 
       edges: []
@@ -125,7 +131,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 217b74fee5b6c8841ab14d5ae583fa87
+    spriteID: d251962c049ed8949b148a8a4e3bc99d
     internalID: 0
     vertices: []
     indices: 
@@ -133,9 +139,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":3388.0,"y":1434.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Background_Rock2_0: 5817113628484480594
+      Background_Montains Alt_0: 5559990497886847792
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
