@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        Time.timeScale = 1f;
+        Time.timeScale = 0f;
 
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
@@ -229,13 +229,13 @@ public class PlayerMovement : MonoBehaviour
     //Sistema de Inputs
     public void OnJump(InputValue value)
     {
-        if (currentState == deadState) return;
+        if (currentState == deadState || (GameManager.instance != null && !GameManager.instance.hasStarted)) return;
         currentState.HandleJumpInput();
     }
 
     public void OnCrouch(InputValue value)
     {
-        if (currentState == deadState) return;
+        if (currentState == deadState || (GameManager.instance != null && !GameManager.instance.hasStarted)) return;
         currentState.HandleCrouchInput(value.isPressed);
     }
     
@@ -244,7 +244,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if(!value.isPressed) return;
 
-        if(currentState == deadState)
+        if(GameManager.instance != null && !GameManager.instance.hasStarted)
+        {
+            GameManager.instance.StartGame();
+        }
+
+        else if(currentState == deadState || (GameManager.instance != null && GameManager.instance.gameOver))
         {
             RestartGame();
         }
@@ -259,14 +264,15 @@ public class PlayerMovement : MonoBehaviour
     {
         isPaused = !isPaused;
 
-        if(isPaused)
+        Time.timeScale = isPaused ? 0f : 1f;
+        /*if(isPaused)
         {
             Time.timeScale = 0f;
         }
         else
         {
             Time.timeScale = 1f;
-        }
+        }*/
 
         OnPauseChanged?.Invoke(isPaused);
     }

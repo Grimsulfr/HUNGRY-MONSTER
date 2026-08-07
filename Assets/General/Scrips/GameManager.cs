@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     //Evento para Overver HUD
     public event Action<float> OnDistanceChanged;
+    public event Action OnGameOver;
+    public event Action<bool> OnGameStarted;
 
     //Spawn Settings
     public static GameManager instance;
@@ -20,7 +22,8 @@ public class GameManager : MonoBehaviour
     public float speedMultiplier;
     public float maxspeed;
 
-    public bool gameOver;
+    public bool gameOver { get; private set;}
+    public bool hasStarted {get; private set;}
 
     public float Distance { get; private set;}
 
@@ -42,6 +45,7 @@ public class GameManager : MonoBehaviour
         }
 
         gameOver = false;
+        hasStarted = false;
     }
 
     private void OnEnable()
@@ -64,20 +68,29 @@ public class GameManager : MonoBehaviour
         speedMultiplier = 1f;
         timer = 0f;
         gameOver = false;
+        hasStarted = false;
 
         OnDistanceChanged?.Invoke(Distance);
+    }
+
+    public void StartGame()
+    {
+        hasStarted = true;
+        Time.timeScale = 1f;
+        OnGameStarted?.Invoke(true);
     }
 
     public void SetGameOver()
     {
         gameOver = true;
         speedMultiplier = 0f;
+        OnGameOver?.Invoke();
     }
 
     // Update is called once per frame
     void Update()
     {   
-        if (gameOver)
+        if (!hasStarted || gameOver)
         {
             return;
         }

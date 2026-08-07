@@ -7,7 +7,10 @@ public class HUDController : MonoBehaviour
     //Referencias UI
     public Slider healthSlider;
     public TextMeshProUGUI scoreText;
+
+    public GameObject startPanel;
     public GameObject pausePanel;
+    public GameObject gameOverPanel;
 
     //Referencias Juego
     public PlayerMovement player;
@@ -29,6 +32,8 @@ public class HUDController : MonoBehaviour
         if (GameManager.instance != null)
         {
             GameManager.instance.OnDistanceChanged += UpdateDistanceUI;
+            GameManager.instance.OnGameOver += ShowGameOverUI;
+            GameManager.instance.OnGameStarted += OnGameStartedUI;
         }
     }
 
@@ -38,12 +43,17 @@ public class HUDController : MonoBehaviour
         {
             GameManager.instance.OnDistanceChanged -= UpdateDistanceUI;
             GameManager.instance.OnDistanceChanged += UpdateDistanceUI;
-        }
 
-        if(pausePanel != null)
-        {
-            pausePanel.SetActive(false);
+            GameManager.instance.OnGameOver -= ShowGameOverUI;
+            GameManager.instance.OnGameOver += ShowGameOverUI;
+
+            GameManager.instance.OnGameStarted -= OnGameStartedUI;
+            GameManager.instance.OnGameStarted += OnGameStartedUI;
         }
+        
+        if (startPanel != null) startPanel.SetActive(true);
+        if (pausePanel != null) pausePanel.SetActive(false);
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
     }
 
     //Desuscribirse de la señal si se desactiva/destroy object
@@ -59,7 +69,9 @@ public class HUDController : MonoBehaviour
         //GM Desubscripcion
         if (GameManager.instance != null)
         {
-           GameManager.instance.OnDistanceChanged -= UpdateDistanceUI;
+            GameManager.instance.OnDistanceChanged -= UpdateDistanceUI;
+            GameManager.instance.OnGameOver -= ShowGameOverUI;
+            GameManager.instance.OnGameStarted -= OnGameStartedUI;
         }
     }
 
@@ -87,6 +99,22 @@ public class HUDController : MonoBehaviour
         if (pausePanel != null)
         {
             pausePanel.SetActive(isPaused);
+        }
+    }
+
+    private void ShowGameOverUI()
+    {
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+        }
+    }
+
+    private void OnGameStartedUI(bool started)
+    {
+        if (startPanel != null)
+        {
+            startPanel.SetActive(!started);
         }
     }
 
