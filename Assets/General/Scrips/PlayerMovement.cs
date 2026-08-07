@@ -105,27 +105,12 @@ public class PlayerMovement : MonoBehaviour
                 jumpingState.OnGrounded();
             }
         }
-        /*
-        if(other.gameObject.layer == groundLayer)
-        {
-            isGrounded = true;
-            isJumping = false;
-        }
-    }
-    private void OnCollisionExit2D(Collision2D other)
-    {
-         if(other.gameObject.layer == groundLayer)
-        {
-            isGrounded = false;
-        }*/
     }
 
     //Detector de obstaculos e items
     private void OnTriggerEnter2D(Collider2D other)
     {
         int layerObject = other.gameObject.layer;
-
-        /*bool isRunning = isGrounded && !isSliding && !isJumping;*/
 
         //Bomba
         if (layerObject == lowObstacleLayer && currentState != jumpingState)
@@ -210,7 +195,6 @@ public class PlayerMovement : MonoBehaviour
         if (spriteRenderer != null)
         {
             spriteRenderer.material.SetFloat("_Invincible", 1);
-            //spriteRenderer.color = new Color(1f, 0.5f, 0.5f, 0.8f);
         }
 
         yield return new WaitForSeconds(duration);
@@ -220,7 +204,6 @@ public class PlayerMovement : MonoBehaviour
         if(spriteRenderer != null)
         {
             spriteRenderer.material.SetFloat("_Invincible", 0);
-            //spriteRenderer.color = Color.white;
         }
 
     }
@@ -265,14 +248,6 @@ public class PlayerMovement : MonoBehaviour
         isPaused = !isPaused;
 
         Time.timeScale = isPaused ? 0f : 1f;
-        /*if(isPaused)
-        {
-            Time.timeScale = 0f;
-        }
-        else
-        {
-            Time.timeScale = 1f;
-        }*/
 
         OnPauseChanged?.Invoke(isPaused);
     }

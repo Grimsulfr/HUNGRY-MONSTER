@@ -15,9 +15,6 @@ public class HUDController : MonoBehaviour
     //Referencias Juego
     public PlayerMovement player;
 
-    /*private float currentScore = 0;
-    public float scoreSpeed = 10f;*/
-
     //suscribirse a la señal si el jugador existe
     void OnEnable()
     {
