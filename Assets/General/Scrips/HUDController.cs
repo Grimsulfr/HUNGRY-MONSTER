@@ -7,40 +7,87 @@ public class HUDController : MonoBehaviour
     //Referencias UI
     public Slider healthSlider;
     public TextMeshProUGUI scoreText;
+    public GameObject pausePanel;
 
     //Referencias Juego
-    private PlayerMovement player;
-    private float currentScore = 0;
-    public float scoreSpeed = 10f;
+    public PlayerMovement player;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    /*private float currentScore = 0;
+    public float scoreSpeed = 10f;*/
+
+    //suscribirse a la señal si el jugador existe
+    void OnEnable()
+    {
+        //Player Events
+        if (player != null)
+        {
+            player.OnHealthChanged += UpdateHealthBar;
+            player.OnPauseChanged += TogglePauseUI;
+        }
+
+        //GameManager Event
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.OnDistanceChanged += UpdateDistanceUI;
+        }
+    }
+
     void Start()
     {
-        player = FindAnyObjectByType<PlayerMovement>();
-
-        if (player != null && healthSlider != null)
+        if(GameManager.instance != null)
         {
-            healthSlider.maxValue = player.maxHealth;
-            healthSlider.value = player.currentHealth;
+            GameManager.instance.OnDistanceChanged -= UpdateDistanceUI;
+            GameManager.instance.OnDistanceChanged += UpdateDistanceUI;
+        }
+
+        if(pausePanel != null)
+        {
+            pausePanel.SetActive(false);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    //Desuscribirse de la señal si se desactiva/destroy object
+    void OnDisable()
+    {   
+        //Player Desubscription
+        if (player != null)
+        {
+            player.OnHealthChanged -= UpdateHealthBar;
+            player.OnPauseChanged -= TogglePauseUI;
+        }
+
+        //GM Desubscripcion
+        if (GameManager.instance != null)
+        {
+           GameManager.instance.OnDistanceChanged -= UpdateDistanceUI;
+        }
+    }
+
+    //Llama si el Player emite señal
+    private void UpdateHealthBar(int currentHealth, int maxHealth)
     {
-        if (player != null && healthSlider != null)
+        print("Se actualizo Health");
+        if (healthSlider != null)
         {
-            healthSlider.value = player.currentHealth;
-        }
-
-        if (player != null && scoreSpeed > 0)
-        {
-            currentScore += scoreSpeed * Time.deltaTime;
-
-            if(scoreText != null)
-            {
-                scoreText.text = $"Distance: {Mathf.FloorToInt(currentScore)} m";
-            }
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
         }
     }
+
+    private void UpdateDistanceUI (float currentDistance)
+    {
+        if(scoreText != null)
+        {
+            scoreText.text = $"Distance: {Mathf.FloorToInt(currentDistance)} m";
+        }
+    }
+
+    private void TogglePauseUI(bool isPaused)
+    {
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(isPaused);
+        }
+    }
+
 }

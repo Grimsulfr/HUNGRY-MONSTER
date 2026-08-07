@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,24 +6,30 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //Emisor de evento para UI
+    public event Action<int, int> OnHealthChanged;
+    public event Action<bool> OnPauseChanged;
+
+
     //Componentes
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     public Animator anim;
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
 
     //Fisicas y Movimiento
-    public float jump;
-    private bool isGrounded;
-    private bool isSliding = false;
-    private bool isJumping = false;
-
+    public State currentState;
+    public RunningState runningState;
+    public JumpingState jumpingState;
+    public SlidingState slidingState;
+    public DeadState deadState;
 
     //Sistema de Vida
+    public float jump;
     public int maxHealth = 100;
     public int currentHealth;
 
     //Sistema de PowerUp e Invencibility
-    public bool isInvincible=false;
+    public bool isInvincible = false;
     public float invincibilityDuration = 5f;
     public Coroutine invincibilityCoroutine;
 
@@ -32,48 +39,74 @@ public class PlayerMovement : MonoBehaviour
     [Range(0,100)] public int highDamagePercent = 25;
 
     //Sistemas Extra de acomodar
-    private bool isDead = false;
     private bool isPaused = false;
 
     //Identidad de Capas
     private int lowObstacleLayer;
     private int midObstacleLayer;
     private int highObstacleLayer;
-
     private int itemHealLayer;
-
     private int itemPowerUpLayer;
-
-
+    private int groundLayer;
+    private int isGrounded;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        if (anim == null) anim = GetComponent<Animator>();
 
-        if (anim == null)
-        {
-            anim = GetComponent<Animator>();
-        }
+        runningState = GetComponent<RunningState>() ?? gameObject.AddComponent<RunningState>();
+        jumpingState = GetComponent<JumpingState>() ?? gameObject.AddComponent<JumpingState>();
+        slidingState = GetComponent<SlidingState>() ?? gameObject.AddComponent<SlidingState>();
+        deadState = GetComponent<DeadState>() ?? gameObject.AddComponent<DeadState>();
+
+        runningState.Init(this);
+        jumpingState.Init(this);
+        slidingState.Init(this);
+        deadState.Init(this);
+
         lowObstacleLayer = LayerMask.NameToLayer("LowObstacle");
         if (lowObstacleLayer == -1) lowObstacleLayer = 7;
-
         midObstacleLayer = LayerMask.NameToLayer("MidObstacle");
         highObstacleLayer = LayerMask.NameToLayer("HighObstacle");
         itemHealLayer = LayerMask.NameToLayer("ItemHeal");
         itemPowerUpLayer = LayerMask.NameToLayer("ItemPowerUp");
+        groundLayer = LayerMask.NameToLayer("Ground");
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentHealth = maxHealth;
         Time.timeScale = 1f;
+
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+
+        ChangeState(runningState);
+    }
+
+    public void ChangeState(State newState)
+    {
+        if (currentState != null)
+        {
+            currentState.ExitState();
+        }
+        currentState = newState;
+        currentState.EnterState();
     }
 
     //Sistema de Deteccion de Colision con suelo
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        if (other.gameObject.layer == groundLayer)
+        {
+            if (currentState == jumpingState)
+            {
+                jumpingState.OnGrounded();
+            }
+        }
+        /*
+        if(other.gameObject.layer == groundLayer)
         {
             isGrounded = true;
             isJumping = false;
@@ -81,10 +114,10 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionExit2D(Collision2D other)
     {
-         if(other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+         if(other.gameObject.layer == groundLayer)
         {
             isGrounded = false;
-        }
+        }*/
     }
 
     //Detector de obstaculos e items
@@ -92,23 +125,23 @@ public class PlayerMovement : MonoBehaviour
     {
         int layerObject = other.gameObject.layer;
 
-        bool isRunning = isGrounded && !isSliding && !isJumping;
+        /*bool isRunning = isGrounded && !isSliding && !isJumping;*/
 
-        if (layerObject == lowObstacleLayer && !isJumping)
+        //Bomba
+        if (layerObject == lowObstacleLayer && currentState != jumpingState)
         {
-            Debug.Log("SE DETECTA IF DE BOMB!! :D");
             TakeDamagePercent(lowDamagePercent);
             Destroy(other.gameObject);
         }
 
         //Proyectiles
-        else if (layerObject == midObstacleLayer && isRunning)
+        else if (layerObject == midObstacleLayer && currentState == runningState)
         {
             TakeDamagePercent(midDamagePercent);
             Destroy(other.gameObject);
         }
         //Kinsecto
-        else if (layerObject == highObstacleLayer && isJumping)
+        else if (layerObject == highObstacleLayer && currentState == jumpingState)
         {
             TakeDamagePercent(highDamagePercent);
             Destroy(other.gameObject);
@@ -129,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
     //Sistema e Daño y Derrota
     public void TakeDamagePercent(int percentage)
     {
-        if (isDead || isInvincible) return;
+        if (currentState == deadState || isInvincible) return;
 
         int damageAmount = Mathf.RoundToInt(maxHealth * (percentage/100f));
         currentHealth -= damageAmount;
@@ -137,27 +170,16 @@ public class PlayerMovement : MonoBehaviour
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            Die();
-        }
-    }
-    private void Die()
-    {
-        if(isDead) return;
-
-        isDead = true;
-
-        if (anim != null)
-        {
-            anim.SetBool("Sleep", true);
+            ChangeState(deadState);
         }
 
-        rb.linearVelocity = Vector2.zero;
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
     //Sistema Curas y que no exceda max vida
     public void HealHealth(int amount)
     {
-        if (isDead) return;
+        if (currentState == deadState) return;
 
         currentHealth += amount;
         
@@ -165,6 +187,8 @@ public class PlayerMovement : MonoBehaviour
         {
             currentHealth = maxHealth;
         }
+
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
     //Sistema de Invencibilidad
@@ -185,7 +209,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (spriteRenderer != null)
         {
-            spriteRenderer.color = new Color(1f, 0.5f, 0.5f, 0.8f);
+            spriteRenderer.material.SetFloat("_Invincible", 1);
+            //spriteRenderer.color = new Color(1f, 0.5f, 0.5f, 0.8f);
         }
 
         yield return new WaitForSeconds(duration);
@@ -194,7 +219,8 @@ public class PlayerMovement : MonoBehaviour
 
         if(spriteRenderer != null)
         {
-            spriteRenderer.color = Color.white;
+            spriteRenderer.material.SetFloat("_Invincible", 0);
+            //spriteRenderer.color = Color.white;
         }
 
     }
@@ -203,32 +229,14 @@ public class PlayerMovement : MonoBehaviour
     //Sistema de Inputs
     public void OnJump(InputValue value)
     {
-        if (isDead) return;
-
-        if(isGrounded)
-        {
-            rb.AddForce(Vector2.up * jump, ForceMode2D.Impulse);
-            anim.SetTrigger("Jump");
-            isSliding = false;
-            isJumping = true;
-
-        }
+        if (currentState == deadState) return;
+        currentState.HandleJumpInput();
     }
 
     public void OnCrouch(InputValue value)
     {
-        if (isDead) return;
-
-        if(isGrounded && value.isPressed)
-        {
-            anim.SetBool("Slide", true);
-            isSliding = true;
-        }
-        else
-        {
-            anim.SetBool("Slide", false);
-            isSliding = false;
-        }
+        if (currentState == deadState) return;
+        currentState.HandleCrouchInput(value.isPressed);
     }
     
     public void OnRestartAndPause(InputValue value)
@@ -236,7 +244,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(!value.isPressed) return;
 
-        if(isDead)
+        if(currentState == deadState)
         {
             RestartGame();
         }
@@ -259,6 +267,8 @@ public class PlayerMovement : MonoBehaviour
         {
             Time.timeScale = 1f;
         }
+
+        OnPauseChanged?.Invoke(isPaused);
     }
 
     private void RestartGame()

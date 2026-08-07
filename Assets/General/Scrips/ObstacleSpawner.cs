@@ -20,7 +20,7 @@ public class ObstacleSpawner : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        if(timer > timeBetweenSpawns)
+        if(timer > timeBetweenSpawns && !GameManager.instance.gameOver)
         {
             timer = 0f;
             SpawnRandomObject();
