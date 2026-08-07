@@ -133,12 +133,12 @@ GameObject:
   - component: {fileID: 123079627}
   - component: {fileID: 123079626}
   m_Layer: 3
-  m_Name: Floor (3)
+  m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &123079626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +153,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LoopingGround
   baseSpeed: 10
   totalCopies: 3
+  spriteWidth: 0
+  mainCamera: {fileID: 0}
 --- !u!50 &123079627
 Rigidbody2D:
   serializedVersion: 5
@@ -218,7 +220,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 19.2, y: 2.3}
+    oldSize: {x: 19.13, y: 2.3}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -564,14 +566,13 @@ GameObject:
   - component: {fileID: 547036559}
   - component: {fileID: 547036558}
   - component: {fileID: 547036557}
-  - component: {fileID: 547036561}
   m_Layer: 3
-  m_Name: Floor
+  m_Name: FloorMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!50 &547036557
 Rigidbody2D:
   serializedVersion: 5
@@ -637,7 +638,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 19.2, y: 2.3}
+    oldSize: {x: 19.13, y: 2.3}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -692,7 +693,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7704557217665485381, guid: 4f33895d5b07da245aa0586471fcad16, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -719,20 +720,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &547036561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 547036556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 414cf762eea95724e86050329a537b67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LoopingGround
-  baseSpeed: 10
-  totalCopies: 3
 --- !u!114 &556726042 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 880855543628585238, guid: edf2025f2624d694f8fcff65df3302c7, type: 3}
@@ -1187,28 +1174,13 @@ GameObject:
   - component: {fileID: 1543637701}
   - component: {fileID: 1543637700}
   - component: {fileID: 1543637699}
-  - component: {fileID: 1543637698}
   m_Layer: 3
-  m_Name: Floor (1)
+  m_Name: FloorMove 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1543637698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1543637697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 414cf762eea95724e86050329a537b67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LoopingGround
-  baseSpeed: 10
-  totalCopies: 3
+  m_IsActive: 1
 --- !u!50 &1543637699
 Rigidbody2D:
   serializedVersion: 5
@@ -1274,7 +1246,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 19.2, y: 2.3}
+    oldSize: {x: 19.13, y: 2.3}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1329,7 +1301,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7704557217665485381, guid: 4f33895d5b07da245aa0586471fcad16, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1351,7 +1323,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.8, y: -4.7606006, z: 0}
-  m_LocalScale: {x: 0.636, y: -0.6875158, z: 0.021730889}
+  m_LocalScale: {x: 0.66, y: -0.6875158, z: 0.021730889}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1654,6 +1626,56 @@ PrefabInstance:
       addedObject: {fileID: 1502822139}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5eda79cdaa0390341992bed82ce8f03c, type: 3}
+--- !u!1 &1827265411
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1827265413}
+  - component: {fileID: 1827265412}
+  m_Layer: 3
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1827265412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827265411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f7f814561a6aa47a8f4c6168fe03e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GroundManager
+  groundTiles:
+  - {fileID: 547036560}
+  - {fileID: 1543637702}
+  - {fileID: 1827967864}
+  baseSpeed: 10
+  overlapFix: 0.01
+--- !u!4 &1827265413
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827265411}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0194, y: -4.7606006, z: 0}
+  m_LocalScale: {x: 0.9406701, y: -0.6875158, z: 0.021730889}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1827967859
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,28 +1688,13 @@ GameObject:
   - component: {fileID: 1827967863}
   - component: {fileID: 1827967862}
   - component: {fileID: 1827967861}
-  - component: {fileID: 1827967860}
   m_Layer: 3
-  m_Name: Floor (2)
+  m_Name: FloorMove 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1827967860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1827967859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 414cf762eea95724e86050329a537b67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LoopingGround
-  baseSpeed: 10
-  totalCopies: 3
+  m_IsActive: 1
 --- !u!50 &1827967861
 Rigidbody2D:
   serializedVersion: 5
@@ -1753,7 +1760,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 19.2, y: 2.3}
+    oldSize: {x: 19.13, y: 2.3}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1808,7 +1815,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7704557217665485381, guid: 4f33895d5b07da245aa0586471fcad16, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1829,7 +1836,7 @@ Transform:
   m_GameObject: {fileID: 1827967859}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.8, y: -4.7606006, z: 0}
+  m_LocalPosition: {x: 17.9, y: -4.7606006, z: 0}
   m_LocalScale: {x: 0.634, y: -0.6875158, z: 0.021730889}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2070,6 +2077,7 @@ SceneRoots:
   - {fileID: 1861923097}
   - {fileID: 1097208182}
   - {fileID: 619394802}
+  - {fileID: 1827265413}
   - {fileID: 123079630}
   - {fileID: 547036560}
   - {fileID: 1543637702}
