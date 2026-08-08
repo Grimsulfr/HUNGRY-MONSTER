@@ -27,9 +27,6 @@ public class GameManager : MonoBehaviour
 
     public float Distance { get; private set;}
 
-    //Interfaz de Usuario
-    public Text distanceUI;
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -109,14 +106,6 @@ public class GameManager : MonoBehaviour
         Distance += Time.deltaTime * 10f * speedMultiplier;
 
         //Emitir la señal actual
-        OnDistanceChanged?.Invoke(Distance);
-
-        //UI Contador Distancia
-        if(distanceUI != null)
-        {
-            distanceUI.text = "Distance: " + Distance.ToString("F2");
-        }
-
-        
+        OnDistanceChanged?.Invoke(Distance);   
     }
 }

@@ -945,7 +945,6 @@ MonoBehaviour:
   timeBetweenSpawns: 3
   speedMultiplier: 1
   maxspeed: 7
-  distanceUI: {fileID: 0}
 --- !u!4 &803270277
 Transform:
   m_ObjectHideFlags: 0
